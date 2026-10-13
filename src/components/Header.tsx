@@ -2,16 +2,11 @@
 import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { dealer, waLink } from "@/content/dealer";
+import { sectionIds, sections, type SectionId } from "@/content/sections";
 import { getLenis, gsap, reducedMotion } from "@/motion/core";
+import { watchBlocks } from "@/motion/header";
 import { ChatIcon } from "./Icons";
 import { TLink } from "./TLink";
-
-const nav = [
-  { href: "/modelos/", label: "Modelos" },
-  { href: "/#caminos", label: "Caminos" },
-  { href: "/#servicio", label: "Servicio" },
-  { href: "/contacto/", label: "Contacto" },
-];
 
 export function Header() {
   const [open, setOpen] = useState(false);
@@ -21,6 +16,16 @@ export function Header() {
   const menu = useRef<HTMLDivElement>(null);
   const button = useRef<HTMLButtonElement>(null);
   const tl = useRef<gsap.core.Timeline | null>(null);
+  // En la portada, el bloque que se está leyendo: el menú lo marca y el teléfono muestra su nombre arriba.
+  const onHome = pathname === "/";
+  const [spy, setSpy] = useState<SectionId | null>(null);
+  useEffect(() => {
+    if (!onHome) {
+      setSpy(null);
+      return;
+    }
+    return watchBlocks(sectionIds, (id) => setSpy(id as SectionId | null));
+  }, [onHome]);
 
   /**
    * Apertura del menú en capas (parallax): el panel baja como una cortina desde el encabezado; atrás, la palabra
@@ -94,20 +99,34 @@ export function Header() {
     return () => window.removeEventListener("keydown", onKey);
   }, [open]);
 
-  const current = (href: string) => (href === "/modelos/" ? pathname.startsWith("/modelos") : pathname === href);
+  // En la portada los enlaces bajan a cada bloque; desde otra página llevan a la página o al bloque.
+  const hrefOf = (s: (typeof sections)[number]) => (onHome ? `/#${s.id}` : s.page);
+  const current = (s: (typeof sections)[number]) => {
+    if (onHome) return spy === s.id ? ("location" as const) : undefined;
+    return !s.page.startsWith("/#") && pathname.startsWith(s.page) ? ("page" as const) : undefined;
+  };
+  const where = spy ? sections.find((s) => s.id === spy)!.label : null;
 
   return (
-    <header className={`site-header${open ? " is-open" : ""}${shown ? " menu-visible" : ""}`} id="site-header" data-theme="dia">
+    <header className={`site-header${open ? " is-open" : ""}${shown ? " menu-visible" : ""}${where ? " has-where" : ""}`} id="site-header" data-theme="dia">
       <div className="wrap header-row">
-        <TLink href="/" label="Zontes Paraguay" className="brand" aria-label="Zontes Paraguay, inicio">
-          <span className="brand-mark">Zontes</span>
-          <span className="brand-sub">Paraguay</span>
-        </TLink>
+        <div className="brand-wrap">
+          <TLink href="/" label="Zontes Paraguay" className="brand" aria-label="Zontes Paraguay, inicio">
+            <span className="brand-mark">Zontes</span>
+            <span className="brand-sub">Paraguay</span>
+          </TLink>
+          {/* Teléfono y tablet: el nombre del bloque que se está leyendo, junto a la marca (abajo, en los angostos) */}
+          {where && (
+            <span className="header-where" aria-hidden="true">
+              <span key={where}>{where}</span>
+            </span>
+          )}
+        </div>
         <nav className="nav" aria-label="Principal">
           <ul>
-            {nav.map((n) => (
-              <li key={n.href}>
-                <TLink href={n.href} label={n.label} aria-current={current(n.href) ? "page" : undefined}>
+            {sections.map((n) => (
+              <li key={n.id}>
+                <TLink href={hrefOf(n)} label={n.label} aria-current={current(n)}>
                   {n.label}
                 </TLink>
               </li>
@@ -129,9 +148,19 @@ export function Header() {
         </p>
         <nav className="wrap mm-inner" aria-label="Menú">
           <ul className="mm-list">
-            {nav.map((n, i) => (
-              <li key={n.href}>
-                <TLink href={n.href} label={n.label} className="mm-item" aria-current={current(n.href) ? "page" : undefined} onClick={() => setOpen(false)}>
+            {sections.map((n, i) => (
+              <li key={n.id}>
+                <TLink
+                  href={hrefOf(n)}
+                  label={n.label}
+                  className="mm-item"
+                  aria-current={current(n)}
+                  onClick={() => {
+                    // Lenis está frenado con el menú abierto: se reactiva antes de que el enlace baje al bloque.
+                    getLenis()?.start();
+                    setOpen(false);
+                  }}
+                >
                   <span className="mm-link">{n.label}</span>
                   <span className="mm-num num" aria-hidden="true">
                     {String(i + 1).padStart(2, "0")}

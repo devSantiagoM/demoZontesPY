@@ -8,7 +8,7 @@ import { scrollToTarget } from "@/motion/core";
 type Props = ComponentProps<typeof Link> & { href: string; label?: string };
 
 /**
- * Enlace interno con transición: «/#caminos» desde la portada solo hace scroll; hacia otra página sube la
+ * Enlace interno con transición: «/#modelos» desde la portada solo hace scroll; hacia otra página sube la
  * cortina con `label` (el nombre del destino) y después navega. Ctrl/⌘ + clic abre en otra pestaña como siempre.
  */
 export function TLink({ href, label, onClick, children, ...rest }: Props) {

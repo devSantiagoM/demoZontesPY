@@ -10,8 +10,10 @@
   .nav,.header-cta span{display:none}
   .header-cta{width:var(--hit);padding:0}
   .menu-btn{display:block}
-  .gama-head{grid-template-columns:1fr}
-  .gama-head .tabs{grid-column:1;grid-row:auto;justify-self:start}
+  .has-where .brand-sub{display:none}
+  .has-where .header-where{display:flex;align-items:center;gap:10px;min-width:0;font-size:var(--fs-sm);font-weight:600;white-space:nowrap}
+  .header-where::before{content:"";flex:none;width:1px;height:16px;background:currentColor;opacity:.35}
+  .header-where span{overflow:hidden;text-overflow:ellipsis;animation:where-in .45s var(--ease) both}
   .contact-grid,.sheet-grid{grid-template-columns:minmax(0,1fr)}
 }
 
@@ -36,4 +38,14 @@
 @media (max-width:360px){
   .footer-grid{grid-template-columns:1fr}
   .cluster-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+
+/* Teléfonos: la marca sube un poco y el nombre del bloque va debajo, chico, así entra entero */
+@media (max-width:480px){
+  .has-where .brand-mark{transform:translateY(-8px)}
+  .has-where .header-where{position:absolute;left:0;top:calc(50% + 3px);font-size:12px;letter-spacing:.01em;color:var(--muted)}
+  .header-where::before{display:none}
+}
+@media (max-width:360px){
+  .gama-filters .tabs button .num{display:none}
 }

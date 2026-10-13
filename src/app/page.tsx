@@ -1,19 +1,24 @@
+import { Band } from "@/components/Band";
 import { ContactBlock } from "@/components/ContactBlock";
 import { Hero } from "@/components/home/Hero";
 import { Lineup } from "@/components/home/Lineup";
-import { Roads } from "@/components/home/Roads";
 import { Services } from "@/components/home/Services";
-import { Story } from "@/components/home/Story";
+import { Why } from "@/components/home/Why";
+import { bandPhrases } from "@/content/home";
 
+/**
+ * La portada en cuatro bloques, los mismos del menú y en el mismo orden (content/sections.ts):
+ * 01 Modelos (elegir la moto) · 02 Por qué Zontes (la marca) · 03 Servicio y 04 Contacto (comprar), juntos.
+ */
 export default function Home() {
   return (
     <>
       <Hero />
-      <Story />
       <Lineup />
-      <Roads />
+      <Band items={bandPhrases} />
+      <Why />
       <Services />
-      <ContactBlock />
+      <ContactBlock theme="dia" label="contacto" />
     </>
   );
 }

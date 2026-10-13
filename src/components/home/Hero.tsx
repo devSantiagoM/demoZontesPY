@@ -100,7 +100,7 @@ export function Hero() {
           </h1>
           <p className="lead">{hero.lede}</p>
           <div className="hero-actions">
-            <TLink href="/modelos/" label="Modelos" className="btn btn--line">
+            <TLink href="/#modelos" label="Modelos" className="btn btn--line">
               {hero.primary}
             </TLink>
             <a className="btn btn--signal" href={waLink("Hola, quiero agendar una prueba de manejo.")} target="_blank" rel="noopener noreferrer">
@@ -109,7 +109,7 @@ export function Hero() {
             </a>
           </div>
         </div>
-        <TLink href="/#historia" className="hero-cue" aria-label="Bajar a la historia de Zontes">
+        <TLink href="/#modelos" className="hero-cue" aria-label="Bajar a los modelos">
           <span>Bajá</span>
           <span className="hero-cue-line" aria-hidden="true" />
         </TLink>

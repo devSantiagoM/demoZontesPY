@@ -5,7 +5,8 @@ Sitio para una concesionaria Zontes en Paraguay, hecho con **Next.js (React + Ty
 **datos de ejemplo**.
 
 Esta es la **versión sin 3D**: la portada usa las fotos de las motos en capas con **parallax** en lugar de la
-moto en Three.js. Todo lo demás (pantalla de carga, la gama, fichas, caminos, menú, contacto) es igual.
+moto en Three.js, y el contenido está agrupado en cuatro bloques, los mismos del menú (ver «Cómo está agrupada
+la portada»).
 
 Las especificaciones de los 18 modelos salen de [zontes.com.ar](https://zontes.com.ar/) (Zontes Argentina).
 Solo se cargó lo publicado: si un dato no figura, la ficha no lo muestra.
@@ -42,7 +43,8 @@ correcto, definí `NEXT_PUBLIC_SITE_URL` (por ejemplo `https://zontes.com.py`).
 |---|---|
 | Modelos, fichas, colores, usos, momentos de la 703F | `src/content/models.ts` |
 | Fotos (archivo, tamaño, texto alternativo) | `src/content/photos.ts` |
-| Textos de la portada, escenas del recorrido (`story`: textos, fotos y diseño de cada una), colores a probar (`colorPicks`), «Para nuestros caminos» (foto de fondo, `bgPos`, botón), servicios, franja y preguntas frecuentes | `src/content/home.ts` |
+| Los cuatro bloques de la portada (nombre y orden; de ahí salen el menú y los rótulos «01 — Modelos») | `src/content/sections.ts` |
+| Textos de la portada, «Por qué Zontes» (`why`), caminos del filtro de Modelos (`roads`: foto de fondo, `bgPos`, recomendadas, botón), servicios, franja y preguntas frecuentes | `src/content/home.ts` |
 | Datos de la concesionaria y enlaces de WhatsApp | `src/content/dealer.ts` |
 
 Cada modelo tiene `uses` (`ciudad`, `ruta`, `tierra`, `pista`): de ahí salen los filtros del catálogo.
@@ -56,10 +58,10 @@ El primer color de `paints` es el que pinta su placa en la lista (y la portada d
    («Zontes 350R azul, vista de tres cuartos»).
 3. En `src/content/models.ts`, poné `photo: F.<grupo>.<foto>` en el color que corresponde. Listo: la foto
    aparece en la vitrina de la gama, en la miniatura de la lista (tablet y teléfono), en la portada y en
-   «Colores y vistas» de la ficha, en las tarjetas «También en la gama» y en «Para nuestros caminos».
+   «Colores y vistas» de la ficha, en las tarjetas «También en la gama».
 4. **Otras vistas** del mismo modelo (perfil, lado izquierdo): van en `photos` del modelo, con `label`.
 5. **Fotos de uso** (la moto en la calle): van en `moments` del modelo (pestañas de la ficha) o en `roads`
-   (`home.ts`), donde son el fondo desenfocado de «Para nuestros caminos». `pos` y `bgPos` eligen qué parte de
+   (`home.ts`), donde son el fondo desenfocado del bloque Modelos al filtrar por camino. `pos` y `bgPos` eligen qué parte de
    la foto queda a la vista al recortarla (como `object-position`). Para ese fondo conviene una foto de 1920 px
    o más: con las actuales (500 px de ancho) el desenfoque disimula que son chicas.
 
@@ -73,8 +75,8 @@ src/
   app/                    páginas: portada, /modelos, /modelos/[modelo] (18, estáticas), /contacto
   content/                los textos y datos
   components/
-    home/                 portada: Hero (foto en capas), Story (escenas con parallax), ColorPick, la gama,
-                          caminos, servicio
+    home/                 portada: Hero (foto en capas), Lineup (01 Modelos), Why (02 Por qué Zontes),
+                          Services (03 Servicio); el 04 Contacto es components/ContactBlock
     models/               la gama (filas + vitrina con foto), catálogo con filtros, tarjetas, momentos,
                           preguntas frecuentes, foto y placa pintada
     Band                  la franja oscura que corre (se detiene con el cursor; quieta con «reducir movimiento»)
@@ -94,7 +96,7 @@ Misma estructura que el sistema de diseño «Render», con identidad propia:
 - **Tres capas de tokens** (`src/styles/tokens.css`): primitivos `--c-*`, temas `--t-<tema>-*` y semánticos
   `--bg`, `--fg`, `--muted`, `--line`, `--panel`. Temas: **día** (estudio de aluminio), **noche**,
   **tierra** (la tierra colorada, disponible) y **pintura** / **pintura-clara** (la portada de las fichas sin foto,
-  sobre `--paint`). «Para nuestros caminos» usa **noche** sobre la foto desenfocada.
+  sobre `--paint`). El bloque Modelos pasa a **noche** sobre la foto desenfocada al elegir un camino.
 - **Color:** aluminio `#D9DBD8`, asfalto `#1A1B1D`, goma `#0E0F10`, grafito `#5A5E62`. El **ámbar del guiño**
   `#FF9E1B` es solo para acciones (WhatsApp, prueba de manejo); al pasar el cursor parpadea dos veces.
   El color fuerte lo ponen las motos: cada ficha usa su pintura real.
@@ -136,6 +138,26 @@ tocar la pista para saltar, y se ve oscuro sobre fondos claros y claro sobre los
 del navegador, borrá las dos líneas de `html{scrollbar-width:none}` y `::-webkit-scrollbar` y quitá
 `<ScrollBar />` del layout.
 
+## Cómo está agrupada la portada
+
+Antes, las mismas motos aparecían en cuatro lugares con cuatro criterios (por cilindrada en la historia, por
+color, en la lista y por camino) y la lista recién llegaba en la pantalla 7 de 13. Ahora la portada tiene cuatro
+bloques, **los mismos del menú y en el mismo orden** (`content/sections.ts`):
+
+| Bloque | Qué hay | Dónde empieza (1440 × 900) |
+|---|---|---|
+| 01 Modelos | El único lugar para elegir moto: lista + vitrina con colores, filtros por tipo y por camino (Ciudad, Ruta, Tierra). Al elegir un camino, el fondo es la foto de ese camino, desenfocada, y las recomendadas van primero con el porqué. | pantalla 1 |
+| 02 Por qué Zontes | La marca en un solo bloque (antes eran cinco pantallas) | pantalla 3 |
+| 03 Servicio | Prueba, financiación, service y garantía | pantalla 5,4 |
+| 04 Contacto | Formulario y showroom, con el mismo fondo que Servicio: el tramo «comprar» | pantalla 6,2 |
+
+La página pasó de 13,2 a 8,4 pantallas en escritorio (de 14,7 a 10,5 en un teléfono de 390 px).
+
+**Dónde estoy:** cada bloque abre con su rótulo («01 — Modelos»), igual que en el menú. Al bajar, el menú
+subraya el bloque que se está leyendo (`aria-current="location"`); en el teléfono y la tablet, donde el menú está
+cerrado, el nombre del bloque aparece junto a la marca, y el menú desplegable lo marca. Desde las otras páginas,
+el menú lleva a /modelos/, a cada bloque de la portada o a /contacto/.
+
 ## La portada con fotos en capas (parallax)
 
 **Portada** (`components/home/Hero.tsx`): tres capas. Atrás, la palabra gigante ZONTES (en el mismo lugar y
@@ -144,16 +166,8 @@ texto. Al bajar, cada capa va a otra velocidad: la palabra se queda atrás, la m
 texto se va primero. Con mouse, la moto y la palabra siguen al puntero apenas, en sentidos opuestos. Cada capa
 tiene un contenedor para el scroll y otro para el puntero, así una animación no pisa a la otra.
 
-**El recorrido** (`components/home/Story.tsx`, textos en `story` de `content/home.ts`): cinco escenas que
-alternan día y noche.
-
-| Escena | Diseño | Fotos |
-|---|---|---|
-| 01 Diseñada en Jiangmen | `split`: texto + foto | 703F en la tierra colorada |
-| 02 De 198 a 699 cc | `trio`: tres motos con su cilindrada atrás | 350GK, 368G ETC, 703RR |
-| 03 Cuando cae el sol | `split` (noche) | 703F con las luces prendidas |
-| 04 Todo a la vista | `collage` (noche): dos fotos superpuestas | 703F en la ciudad y en ruta |
-| 05 Elegí el color | pastillas de color, nombre gigante en la pintura | 703F, 350X, 703RR, 350T |
+**Por qué Zontes** (`components/home/Why.tsx`, textos en `why` de `content/home.ts`): cuatro tarjetas
+(Jiangmen 2003, motores de 198 a 699 cc, luces LED, tablero TFT) en dos columnas que van a distinta velocidad.
 
 **Cómo se mueve** (`motion/parallax.ts`, GSAP ScrollTrigger con `scrub`):
 
@@ -164,8 +178,7 @@ alternan día y noche.
   lejos que su marco.
 - Solo se animan `transform` y `opacity` (no hay relayout al scrollear). Con «reducir movimiento» no se mueve
   nada y todo queda en su lugar.
-- Para cambiar una escena: editá `story` en `content/home.ts` (`layout`, `photo` / `photos` / `bikes`,
-  `theme`); para cambiar cuánto se mueve una capa, su `data-speed` en `Story.tsx`.
+- Para cambiar cuánto se mueve una capa, cambiá su `data-speed` en `Hero.tsx` o `Why.tsx`.
 
 ## Responsive y accesibilidad
 
@@ -182,5 +195,3 @@ alternan día y noche.
 
 Zontes es una marca de Guangdong Tayo Motorcycle Technology Co., Ltd. Este proyecto no usa logos de la
 marca; para publicarlo como sitio oficial hace falta la autorización correspondiente.
-#   d e m o Z o n t e s P Y  
- 

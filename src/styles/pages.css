@@ -1,6 +1,10 @@
 /* ============ Contacto ============ */
 .contact-grid{display:grid;grid-template-columns:minmax(0,7fr) minmax(0,4fr);gap:64px clamp(40px,8vw,128px)}
 .contact .lead{margin-top:20px;color:var(--muted)}
+/* En la portada, Contacto va pegado a Servicio, con el mismo fondo: los dos forman el tramo «comprar» */
+.contact--block{padding-top:0}
+.contact--block .contact-grid{padding-top:clamp(56px,7vw,104px);border-top:1px solid var(--line)}
+.contact--block .h2{margin-top:0}
 .form{display:grid;gap:18px;max-width:660px;margin-top:40px}
 .field{display:grid;gap:8px}
 .field span{font-size:var(--fs-sm);font-weight:500;color:var(--muted)}

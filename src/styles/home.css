@@ -1,0 +1,114 @@
+/* ============ Portada con foto (capas parallax) ============
+   Tres capas: atrás la palabra gigante ZONTES (mismo lugar y tamaño que la de la pantalla de carga), en el medio
+   la 703F de estudio, adelante el texto. Cada capa tiene un contenedor para el scroll y otro para el puntero, así
+   GSAP mueve uno sin pisar al otro (components/home/Hero.tsx). */
+.hero{position:relative;height:100svh;min-height:560px;overflow:hidden;background:var(--bg);color:var(--fg)}
+.hero-word-layer{position:absolute;left:0;right:0;top:46%;transform:translateY(-50%);pointer-events:none;user-select:none}
+.hero-word{display:flex;justify-content:center;margin:0;font-family:var(--f-display);font-weight:900;font-stretch:125%;font-size:var(--fs-mega);line-height:.8;letter-spacing:-.025em;text-transform:uppercase;color:#C7CAC6;white-space:nowrap;will-change:transform}
+.hero-bike{position:absolute;top:50%;right:max(var(--gutter),calc((100vw - var(--max)) / 2 + var(--gutter)));width:min(58vw,820px);transform:translateY(-40%)}
+.hero-bike-scroll,.hero-bike-pointer,.hero-bike-in{will-change:transform}
+.hero-bike img{display:block;width:100%;height:auto}
+.hero-ui{position:absolute;inset:0;pointer-events:none}
+.hero-ui a,.hero-ui button{pointer-events:auto}
+.hero-copy{position:absolute;left:var(--gutter);bottom:clamp(28px,7vh,80px);display:grid;gap:22px;max-width:min(560px,40vw)}
+.hero-copy .h1{font-size:clamp(46px,6vw,104px)}
+.hero-copy .lead{max-width:34ch;color:var(--muted)}
+.hero-actions{display:flex;flex-wrap:wrap;gap:12px}
+/* «Bajá»: una línea que cae, invitando a bajar */
+.hero-cue{position:absolute;right:var(--gutter);bottom:clamp(28px,7vh,80px);display:grid;justify-items:center;gap:10px;min-width:var(--hit);padding:6px 0;color:var(--muted);font-size:var(--fs-sm);font-weight:600;text-decoration:none}
+.hero-cue-line{position:relative;width:1px;height:56px;overflow:hidden;background:var(--line)}
+.hero-cue-line::after{content:"";position:absolute;left:0;top:-40%;width:1px;height:40%;background:var(--fg);animation:cue 1.8s var(--ease-io) infinite}
+@keyframes cue{to{top:100%}}
+
+/* ============ Bloques de la portada ============
+   Cuatro bloques, los del menú: cada uno abre con su rótulo («01 — Modelos»), igual que en el menú. */
+.block-label{display:flex;align-items:center;gap:12px;margin:0 0 clamp(16px,1.6vw,22px);font-size:var(--fs-sm);font-weight:600;color:var(--muted)}
+.block-label .num{display:inline-flex;align-items:center;gap:12px;color:var(--fg)}
+.block-label .num::after{content:"";width:28px;height:1px;background:var(--muted)}
+.block-head .lead{margin-top:20px}
+
+/* Fotos en un cuadro: la foto se agranda un poco y se desliza adentro al bajar (motion/parallax.ts) */
+.scene-frame{position:relative;overflow:hidden;border-radius:var(--r-lg);background:var(--panel)}
+.scene-frame img{display:block;width:100%;height:100%;object-fit:cover;will-change:transform}
+.scene-points{margin-top:4px;border-top:1px solid var(--line)}
+.scene-points li{display:flex;align-items:center;gap:14px;padding:12px 0;border-bottom:1px solid var(--line);font-weight:500}
+.scene-points svg{flex:none;width:10px;height:10px;fill:var(--c-alu-3)}
+
+/* ============ 02 · Por qué Zontes ============
+   Cuatro tarjetas en dos columnas. Cada columna va a otra velocidad al bajar, y la de la derecha arranca más
+   abajo: la grilla queda escalonada. El dato grande de cada tarjeta se monta sobre el borde de su foto. */
+.why-grid{display:grid;grid-template-columns:minmax(0,1fr);gap:clamp(56px,7vw,96px);margin-top:clamp(48px,6vw,88px)}
+.why{overflow:clip}
+.why-card{min-width:0;container-type:inline-size}
+.why-media{position:relative;display:block;width:100%}
+.why-card--origen .why-media{aspect-ratio:3/2}
+.why-card--luces .why-media,.why-card--tablero .why-media{aspect-ratio:4/3.4}
+.why-text{position:relative;z-index:1;display:grid;gap:12px;align-content:start}
+.why-stat{margin:-.42em 0 0 clamp(12px,1.6vw,24px);font-family:var(--f-display);font-weight:900;font-stretch:125%;font-size:clamp(64px,7.4vw,124px);line-height:.85;letter-spacing:-.03em;color:var(--c-niebla);text-shadow:0 10px 40px rgba(0,0,0,.35);white-space:nowrap}
+.why-stat small{margin-left:.12em;font-size:.36em;font-stretch:100%;letter-spacing:0;color:var(--muted)}
+.why-title{margin-top:10px;font-family:var(--f-display);font-weight:800;font-size:clamp(26px,2.3vw,36px);line-height:1.05;letter-spacing:var(--track-tight)}
+.why-body{max-width:46ch;color:var(--muted);line-height:1.5}
+.why-note{margin-top:clamp(40px,5vw,72px);color:var(--muted)}
+/* Motor: las tres motos en el estudio de aluminio, cada una a su velocidad */
+.why-bikes{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));align-content:center;align-items:end;gap:10px;aspect-ratio:16/10;padding:clamp(18px,2.2vw,32px) clamp(12px,1.4vw,22px);border-radius:var(--r-lg);background:var(--c-alu-2);color:var(--c-asfalto)}
+.why-bike{display:block;aspect-ratio:3/2}
+.why-bike img{width:100%;height:100%;object-fit:contain;object-position:center bottom}
+.why-bike-name{display:block;margin-top:10px;text-align:center;font-family:var(--f-display);font-weight:800;font-size:clamp(14px,1.2vw,18px);line-height:1.1}
+.why-bike-name .num{display:block;margin-top:2px;font-family:var(--f-text);font-weight:500;font-size:var(--fs-xs);color:#4B4F53}
+.why-card--motor .why-stat{margin-top:-.42em;font-size:min(clamp(64px,7.4vw,124px),15cqi)}
+
+@media (min-width:721px){
+  /* Tablet: luces y tablero con la foto al costado del texto */
+  .why-card--side{display:grid;grid-template-columns:minmax(0,9fr) minmax(0,11fr);gap:clamp(24px,3vw,48px);align-items:end}
+  .why-card--side .why-media{aspect-ratio:4/5}
+  .why-card--side .why-stat{margin:0}
+}
+@media (min-width:1024px){
+  .why-grid{grid-template-columns:minmax(0,7fr) minmax(0,5fr);column-gap:clamp(36px,4.4vw,72px);align-items:start}
+  .why-card--motor{margin-top:clamp(80px,11vw,180px)}
+  /* luces, angosta: la foto arriba, vertical */
+  .why-card--luces{display:block}
+  .why-card--luces .why-media{aspect-ratio:4/3.5}
+  .why-card--luces .why-stat{margin:-.42em 0 0 clamp(12px,1.6vw,24px)}
+  .why-card--tablero{grid-template-columns:minmax(0,5fr) minmax(0,6fr)}
+}
+
+/* Teléfono y tablet en vertical: ZONTES arriba, la moto apoyada sobre la mitad de abajo de la palabra (así se lee
+   atrás) y el texto abajo, sobre un velo del color del fondo por si la moto llega hasta ahí en pantallas bajas. */
+@media (max-width:720px),(max-width:1100px) and (orientation:portrait){
+  .hero-word-layer{top:30%}
+  .hero-bike{top:30%;right:auto;left:50%;width:min(100vw,600px);transform:translate(-50%,-6%)}
+  .hero-copy{right:var(--gutter);bottom:max(24px,4svh);max-width:none;gap:14px;isolation:isolate}
+  .hero-copy::before{content:"";position:absolute;z-index:-1;inset:-56px calc(var(--gutter) * -1) -40px;background:linear-gradient(to bottom,transparent,var(--bg) 46%)}
+  .hero-copy .h1{font-size:clamp(40px,11.5vw,72px)}
+  .hero-copy .lead{max-width:44ch}
+  .hero-cue{display:none}
+}
+@media (min-width:721px) and (max-width:1100px) and (orientation:portrait){
+  .hero-bike{width:min(78vw,820px)}
+}
+@media (max-width:720px){
+  .hero-copy .lead{font-size:17px}
+  .hero-actions .btn{min-height:48px;padding:0 20px}
+}
+/* Teléfonos bajos: moto y textos un poco más chicos para que entren juntos */
+@media (max-width:720px) and (max-height:760px){
+  .hero-bike{width:min(88vw,560px)}
+  .hero-copy .h1{font-size:clamp(34px,10vw,52px)}
+  .hero-copy .lead{font-size:16px;line-height:1.45}
+}
+/* Pantallas bajas (teléfono en horizontal, ventana achicada): la portada ocupa justo la pantalla, ZONTES sube y
+   se achica (igual que en la pantalla de carga), la moto a la derecha y el texto compacto a la izquierda. */
+@media (max-height:560px) and (min-width:560px){
+  .hero{min-height:0}
+  .hero-word-layer{top:34%}
+  .hero-word{font-size:min(var(--fs-mega),36vh)}
+  .hero-bike{top:56%;left:auto;right:var(--gutter);width:min(46vw,640px,105vh);transform:translateY(-40%)}
+  .hero-copy{right:auto;bottom:20px;gap:12px;max-width:min(520px,46vw)}
+  .hero-copy::before{display:none}
+  .hero-copy .h1{font-size:clamp(30px,8vh,60px)}
+  .hero-copy .lead{font-size:15px;line-height:1.4}
+  .hero-cue{display:none}
+  .btn{min-height:44px}
+}
+@media (prefers-reduced-motion:reduce){.hero-cue-line::after{animation:none;top:0;height:100%}}

@@ -35,7 +35,10 @@ export function Footer() {
             <h2 className="footer-title">Concesionaria</h2>
             <ul>
               <li>
-                <TLink href="/#caminos" label="Caminos">Qué moto para cada camino</TLink>
+                <TLink href="/#modelos" label="Modelos">Qué moto para cada camino</TLink>
+              </li>
+              <li>
+                <TLink href="/#por-que" label="Por qué Zontes">Por qué Zontes</TLink>
               </li>
               <li>
                 <TLink href="/#servicio" label="Servicio">Prueba, financiación y service</TLink>

@@ -1,14 +1,51 @@
-/* ============ La gama (filas de modelos + vitrina) ============ */
-.gama-head{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:end;gap:20px 48px;margin-bottom:clamp(32px,4vw,48px)}
-.gama-head .lead{grid-column:1}
-.gama-head .tabs{grid-column:2;grid-row:1 / span 2;align-self:end}
-.gama-panel{margin-top:clamp(32px,4.4vw,64px)}
-.gama-note{margin-top:22px}
-.tabs{display:inline-flex;gap:4px;padding:4px;border:1px solid var(--line);border-radius:var(--r-pill)}
-.tabs button{min-height:var(--hit);padding:0 20px;border:0;border-radius:var(--r-pill);background:transparent;color:var(--fg);font-weight:600;transition:background-color .25s,color .25s}
+/* ============ 01 · Modelos (filtros + filas de modelos + vitrina) ============
+   El único lugar de la portada donde se elige una moto. Al elegir un camino (Ciudad, Ruta, Tierra), la sección
+   pasa a noche y el fondo es la foto de ese camino, desenfocada lo justo para que los textos se lean; el fondo
+   queda fijo mientras se recorre la lista (sticky) y funde de una foto a otra. */
+.gama{position:relative;isolation:isolate;overflow:clip;padding-block:0;transition:background-color .6s var(--ease),color .6s var(--ease)}
+.gama-inner{padding-block:clamp(88px,12vw,180px)}
+.gama-bg{position:sticky;top:0;z-index:-1;height:100vh;height:100lvh;margin-bottom:-100vh;margin-bottom:-100lvh;overflow:hidden;opacity:0;transition:opacity .8s var(--ease);pointer-events:none}
+.has-road .gama-bg{opacity:1}
+.gama-bg-img{position:absolute;left:-4%;top:-4%;width:108%;max-width:none;height:108%;object-fit:cover;filter:blur(12px) saturate(1.1) brightness(.62);opacity:0;transition:opacity .9s var(--ease)}
+.gama-bg-img.is-on{opacity:1}
+.gama-scrim{position:absolute;inset:0;background:linear-gradient(90deg,rgba(14,15,16,.62) 0%,rgba(14,15,16,.38) 55%,rgba(14,15,16,.3) 100%)}
+.gama-head .lead{margin-top:20px;max-width:46ch}
+.gama-filters{display:flex;flex-wrap:wrap;align-items:center;gap:14px clamp(24px,3vw,44px);margin-top:clamp(28px,3.4vw,44px)}
+.seg-field{display:flex;flex-wrap:wrap;align-items:center;gap:8px 12px;min-width:0}
+.seg-legend{font-size:var(--fs-sm);font-weight:600;color:var(--muted)}
+.gama-status{min-height:1px}
+.gama-road{max-width:62ch;margin-top:clamp(24px,3vw,36px);font-size:var(--fs-lead);line-height:1.45;color:var(--fg);animation:road-in .6s var(--ease) both}
+.gama-road strong{font-family:var(--f-display);font-weight:800}
+@keyframes road-in{from{opacity:0;transform:translateY(10px)}}
+.gama .count{margin:clamp(20px,2.4vw,28px) 0 0;color:var(--muted)}
+.gama-panel{margin-top:14px}
+.gama-foot{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:16px 32px;margin-top:28px}
+.gama-note{max-width:70ch;color:var(--muted)}
+.gama-actions{display:flex;flex-wrap:wrap;gap:12px}
+.has-road .tabs{border-color:rgba(236,237,235,.3);background:rgba(14,15,16,.32);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px)}
+.gama .showcase-panel{background:var(--c-alu-2)}
+.row-note{color:var(--fg);font-weight:500}
+.showcase-note{display:flex;flex-wrap:wrap;align-items:center;gap:6px 10px;margin-top:12px;color:var(--fg)}
+.showcase-note span{padding:3px 10px;border:1px solid var(--line);border-radius:var(--r-pill);font-size:var(--fs-xs);font-weight:600;color:var(--muted)}
+
+/* Botones segmentados (filtros de la portada y pestañas de las fichas) */
+.tabs{display:inline-flex;flex-wrap:wrap;gap:4px;padding:4px;border:1px solid var(--line);border-radius:28px}
+.tabs button{min-height:var(--hit);padding:0 18px;border:0;border-radius:var(--r-pill);background:transparent;color:var(--fg);font-weight:600;transition:background-color .25s,color .25s}
 .tabs button .num{margin-left:4px;font-weight:500;color:var(--muted)}
-.tabs button[aria-selected="true"]{background:var(--fg);color:var(--bg)}
-.tabs button[aria-selected="true"] .num{color:inherit;opacity:.7}
+.tabs button[aria-selected="true"],.tabs button[aria-pressed="true"]{background:var(--fg);color:var(--bg)}
+.tabs button[aria-selected="true"] .num,.tabs button[aria-pressed="true"] .num{color:inherit;opacity:.7}
+@supports not ((backdrop-filter:blur(1px)) or (-webkit-backdrop-filter:blur(1px))){
+  .has-road .tabs{background:rgba(14,15,16,.72)}
+}
+/* Teléfono: cada filtro ocupa el ancho, con su nombre arriba, y los botones se reparten en una sola línea */
+@media (max-width:720px){
+  .gama-filters{display:grid;gap:14px}
+  .seg-field{display:grid;gap:6px}
+  .gama-filters .tabs{display:flex;flex-wrap:nowrap;width:100%}
+  .gama-filters .tabs button{flex:1 1 auto;min-width:0;padding:0 8px;font-size:15px;white-space:nowrap}
+  .gama-filters .tabs button .num{margin-left:3px}
+  .gama-foot{display:grid;justify-items:start}
+}
 
 /* Escritorio: lista a la izquierda, vitrina fija a la derecha. Tablet y teléfono: filas con miniatura. */
 .gama-split{display:grid;grid-template-columns:minmax(0,1fr);align-items:start}
@@ -95,53 +132,8 @@
 @keyframes band{to{transform:translateX(-50%)}}
 @media (prefers-reduced-motion:reduce){.band-track{animation:none}}
 
-/* ============ Para nuestros caminos ============
-   La foto del camino elegido es el fondo, desenfocada lo justo para que la moto se reconozca; un velo oscuro
-   (más fuerte del lado del texto y abajo) asegura que los textos se lean. Al cambiar de camino, el fondo funde. */
-.roads{position:relative;isolation:isolate;overflow:hidden;padding-block:clamp(72px,9vw,128px);background:var(--c-goma)}
-.roads-bg{position:absolute;inset:0;z-index:-1;overflow:hidden}
-.roads-bg-img{position:absolute;left:-3%;top:-3%;width:106%;max-width:none;height:106%;object-fit:cover;filter:blur(9px) saturate(1.1) brightness(.72);opacity:0;transition:opacity .9s var(--ease)}
-.roads-bg-img.is-on{opacity:1}
-.roads-scrim{position:absolute;inset:0;background:linear-gradient(90deg,rgba(14,15,16,.72) 0%,rgba(14,15,16,.42) 50%,rgba(14,15,16,.22) 100%),linear-gradient(180deg,rgba(14,15,16,.5) 0%,rgba(14,15,16,0) 30%,rgba(14,15,16,0) 55%,rgba(14,15,16,.74) 100%)}
-.roads-head{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:24px 48px}
-.roads-intro{display:grid;gap:12px}
-.roads .eyebrow,.picks-title,.road-caption{color:#C9CCCF}
-.roads .h2{font-size:clamp(38px,4vw,56px)}
-.tabs--glass{border-color:rgba(236,237,235,.3);background:rgba(14,15,16,.3);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px)}
-.road-panel{animation:road-in .6s var(--ease) both}
-@keyframes road-in{from{opacity:0;transform:translateY(12px)}}
-.road-copy{display:grid;justify-items:start;gap:16px;max-width:780px;margin:clamp(48px,7vw,96px) 0 clamp(36px,5vw,64px)}
-.road-tag{padding:6px 14px;border:1px solid rgba(236,237,235,.2);border-radius:var(--r-pill);background:rgba(14,15,16,.6);font-family:var(--f-display);font-weight:800;font-stretch:112%;font-size:15px;letter-spacing:.02em;text-transform:uppercase}
-.road-title{font-family:var(--f-display);font-weight:800;font-size:clamp(42px,6vw,88px);line-height:.95;letter-spacing:var(--track-tight);text-wrap:balance}
-.road-body{max-width:46ch;color:#D6D8DA;font-size:var(--fs-lead);line-height:1.5}
-.picks-title{margin-bottom:12px;font-size:var(--fs-sm);font-weight:600}
-.road-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,220px),1fr));gap:clamp(14px,1.6vw,20px)}
-.road-card{display:block;height:100%;padding:12px 12px 16px;border:1px solid rgba(236,237,235,.18);border-radius:22px;background:rgba(26,27,29,.42);-webkit-backdrop-filter:blur(18px) saturate(1.2);backdrop-filter:blur(18px) saturate(1.2);text-decoration:none;transition:background-color .25s}
-.road-card:hover{background:rgba(26,27,29,.6)}
-.road-card-tile{position:relative;display:block;aspect-ratio:16/9;overflow:hidden;border-radius:14px;background:var(--c-alu)}
-.road-card-tile img{position:absolute;left:8%;top:6%;width:84%;height:88%;object-fit:contain;transition:transform .6s var(--ease)}
-.road-card:hover .road-card-tile img{transform:translateX(6px)}
-.road-card-tile .paint-plate{position:absolute;inset:0;border-radius:0}
-.road-card-row{display:flex;align-items:center;gap:12px;margin-top:14px}
-.road-card-text{display:grid;gap:2px;min-width:0}
-.road-card-name{font-family:var(--f-display);font-weight:800;font-stretch:100%;font-size:clamp(21px,1.8vw,26px);line-height:1.05;transition:font-stretch .7s var(--ease)}
-.road-card:hover .road-card-name,.road-card:focus-visible .road-card-name{font-stretch:125%}
-.road-card-why{font-size:var(--fs-sm);color:#D6D8DA}
-.road-card-arrow{flex:none;width:22px;height:22px;margin-left:auto;transition:transform .3s var(--ease)}
-.road-card:hover .road-card-arrow{transform:translateX(4px)}
-.road-foot{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:16px;margin-top:28px}
-.road-caption{font-size:var(--fs-sm)}
-@supports not ((backdrop-filter:blur(1px)) or (-webkit-backdrop-filter:blur(1px))){
-  .road-card{background:rgba(26,27,29,.84)}
-  .tabs--glass{background:rgba(14,15,16,.72)}
-}
-@media (max-width:720px){
-  .roads-scrim{background:linear-gradient(180deg,rgba(14,15,16,.66) 0%,rgba(14,15,16,.5) 40%,rgba(14,15,16,.8) 100%)}
-  .roads-bg-img{filter:blur(7px) saturate(1.1) brightness(.72)}
-  .road-foot .btn{width:100%}
-}
-
 /* ============ Servicio ============ */
+.services{padding-bottom:clamp(56px,7vw,104px)}
 .services-title{max-width:14ch;margin-bottom:clamp(40px,6vw,72px)}
 .services-list{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));border-top:1px solid var(--fg)}
 .services-list li{display:grid;grid-template-rows:auto 1fr auto;gap:14px;padding:28px 28px 8px 0}

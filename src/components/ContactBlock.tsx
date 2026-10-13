@@ -3,13 +3,16 @@ import { useState, type FormEvent } from "react";
 import { dealer, mapsLink, waLink } from "@/content/dealer";
 import { reasons } from "@/content/home";
 import { byPower, motos, scooters } from "@/content/models";
+import type { SectionId } from "@/content/sections";
+import { BlockLabel } from "./BlockLabel";
 import { ChatIcon, PinIcon } from "./Icons";
 
 /**
  * Contacto por WhatsApp: el formulario arma el mensaje y abre WhatsApp con el texto listo para enviar.
  * No hay servidor ni datos guardados: el sitio es estático.
+ * En la portada va en día, con su rótulo («04 — Contacto»), pegado a Servicio; en su página y en las fichas, de noche.
  */
-export function ContactBlock({ model, titleAs = "h2" }: { model?: string; titleAs?: "h1" | "h2" }) {
+export function ContactBlock({ model, titleAs = "h2", theme = "noche", label }: { model?: string; titleAs?: "h1" | "h2"; theme?: "dia" | "noche"; label?: SectionId }) {
   const [error, setError] = useState("");
   const T = titleAs;
 
@@ -33,9 +36,10 @@ export function ContactBlock({ model, titleAs = "h2" }: { model?: string; titleA
   }
 
   return (
-    <section className="section contact" id="contacto" data-theme="noche" aria-labelledby="contacto-title">
+    <section className={`section contact${label ? " contact--block" : ""}`} id="contacto" data-theme={theme} aria-labelledby="contacto-title">
       <div className="wrap contact-grid">
         <div>
+          {label && <BlockLabel id={label} />}
           <T id="contacto-title" className="h2">
             Escribinos
           </T>

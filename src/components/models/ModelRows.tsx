@@ -13,8 +13,20 @@ const dec = (n: number) => String(n).replace(".", ",");
  * La gama como lista: el nombre de cada modelo, grande, y sus números en columnas.
  * En pantallas anchas, al pasar el cursor (o el foco) por una fila, la vitrina de al lado muestra la foto del
  * modelo delante de su nombre gigante, sus datos y sus colores. En tablet y teléfono cada fila lleva su miniatura.
+ * `notes` (opcional): por qué se recomienda cada modelo para el camino elegido; reemplaza a la categoría en la fila
+ * y aparece en la vitrina con `noteLabel` («Recomendada para ruta»).
  */
-export function ModelRows({ items, headingLevel = 3 }: { items: Model[]; headingLevel?: 2 | 3 }) {
+export function ModelRows({
+  items,
+  headingLevel = 3,
+  notes,
+  noteLabel = "Recomendada",
+}: {
+  items: Model[];
+  headingLevel?: 2 | 3;
+  notes?: Record<string, string>;
+  noteLabel?: string;
+}) {
   const H = `h${headingLevel}` as "h2" | "h3";
   const [activeSlug, setActiveSlug] = useState(items[0]?.slug);
   const [paintIdx, setPaintIdx] = useState(0);
@@ -59,7 +71,14 @@ export function ModelRows({ items, headingLevel = 3 }: { items: Model[]; heading
                 <H className="row-name">
                   <span className="row-name-text">{m.name}</span>
                 </H>
-                <span className="row-cat">{m.category}</span>
+                {notes?.[m.slug] ? (
+                  <span className="row-cat row-note">
+                    <span className="sr-only">{noteLabel}: </span>
+                    {notes[m.slug]}
+                  </span>
+                ) : (
+                  <span className="row-cat">{m.category}</span>
+                )}
                 <span className="row-num num">
                   {m.cc} <small>cc</small>
                 </span>
@@ -71,12 +90,30 @@ export function ModelRows({ items, headingLevel = 3 }: { items: Model[]; heading
           );
         })}
       </ul>
-      <Showcase model={active} paintIdx={Math.min(paintIdx, Math.max(0, active.paints.length - 1))} onPaint={setPaintIdx} />
+      <Showcase
+        model={active}
+        paintIdx={Math.min(paintIdx, Math.max(0, active.paints.length - 1))}
+        onPaint={setPaintIdx}
+        note={notes?.[active.slug]}
+        noteLabel={noteLabel}
+      />
     </div>
   );
 }
 
-function Showcase({ model: m, paintIdx, onPaint }: { model: Model; paintIdx: number; onPaint: (i: number) => void }) {
+function Showcase({
+  model: m,
+  paintIdx,
+  onPaint,
+  note,
+  noteLabel,
+}: {
+  model: Model;
+  paintIdx: number;
+  onPaint: (i: number) => void;
+  note?: string;
+  noteLabel: string;
+}) {
   const paint = m.paints[paintIdx];
   const hex = paint?.hex ?? paintOf(m);
   const photo = paint?.photo;
@@ -105,6 +142,11 @@ function Showcase({ model: m, paintIdx, onPaint }: { model: Model; paintIdx: num
         <p className="showcase-name">Zontes {m.name}</p>
         <p className="showcase-cat">{m.category}</p>
       </div>
+      {note && (
+        <p className="showcase-note">
+          <span>{noteLabel}</span> {note}
+        </p>
+      )}
       <dl className="showcase-specs">
         {specs.map((s) => (
           <div key={s.label}>

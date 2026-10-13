@@ -8,70 +8,49 @@ import type { Use } from "./models";
 export const hero = {
   title: "Zontes, ahora en Paraguay",
   lede: "Motos y scooters de 198 a 699 cc, con pantalla TFT, ABS y ópticas LED. Elegí la tuya y probala en el showroom.",
-  primary: "Ver la gama",
+  primary: "Ver modelos",
   secondary: "Agendar una prueba",
 };
 
 /**
- * El recorrido de la portada: cinco escenas con fotos en capas que se mueven a distinta velocidad (parallax).
- * `layout` elige cómo se arma cada escena (ver components/home/Story.tsx).
+ * «Por qué Zontes»: lo que antes eran cinco escenas, en un solo bloque de cuatro tarjetas con fotos en capas.
+ * `stat` es el dato grande de cada tarjeta (decorativo: el mismo dato está en el texto).
  */
-export type Scene =
-  | { id: string; title: string; body: string; theme: "dia" | "noche"; layout: "split"; photo: Photo; caption?: string }
-  | { id: string; title: string; body: string; theme: "dia" | "noche"; layout: "trio"; bikes: { photo: Photo; cc: number; name: string }[] }
-  | { id: string; title: string; body: string; theme: "dia" | "noche"; layout: "collage"; photos: [Photo, Photo]; points: string[]; caption?: string };
-
-export const story: Scene[] = [
-  {
-    id: "origen",
+export const why = {
+  title: "Lo que hay detrás de cada Zontes",
+  lede: "Fábrica propia, motores con inyección y refrigeración líquida, y tecnología que se usa todos los días.",
+  origen: {
+    stat: "2003",
     title: "Diseñada en Jiangmen",
     body: "Zontes es la marca de Tayo Motorcycle Technology, que diseña y fabrica motos en Jiangmen, China, desde 2003. Cientos de patentes y millones de motores por año.",
-    theme: "dia",
-    layout: "split",
     photo: photos.f703.tierra,
-    caption: "Foto ilustrativa: Zontes 703F.",
   },
-  {
-    id: "motor",
-    title: "De 198 a 699 cc",
+  motor: {
+    stat: "198–699",
+    unit: "cc",
+    title: "Un motor para cada uso",
     body: "Monocilíndricos para la ciudad y un tricilíndrico de 95 hp para la ruta. Todos con inyección electrónica y refrigeración líquida.",
-    theme: "dia",
-    layout: "trio",
     bikes: [
       { photo: photos.gk350.negro, cc: 348, name: "350GK" },
       { photo: photos.g368.negro, cc: 368, name: "368G ETC" },
       { photo: photos.rr703.blancoRojo, cc: 699, name: "703RR" },
     ],
   },
-  {
-    id: "luces",
-    title: "Cuando cae el sol",
-    body: "Ópticas full LED adelante y atrás, para ver y que te vean en el tránsito de la noche.",
-    theme: "noche",
-    layout: "split",
+  luces: {
+    stat: "LED",
+    title: "Para ver y que te vean",
+    body: "Ópticas full LED adelante y atrás, para el tránsito de la noche.",
     photo: photos.f703.luces,
-    caption: "Foto ilustrativa: Zontes 703F de noche.",
   },
-  {
-    id: "tablero",
+  tablero: {
+    stat: "TFT",
     title: "Todo a la vista",
-    body: "Pantalla TFT a color con mirroring del celular, arranque keyless y sensor de presión de neumáticos, según el modelo.",
-    theme: "noche",
-    layout: "collage",
-    photos: [photos.f703.ciudad, photos.f703.ruta],
-    points: ["Pantalla TFT a color con mirroring", "Arranque keyless", "Sensor de presión de neumáticos"],
-    caption: "Fotos ilustrativas: Zontes 703F en la ciudad y en ruta.",
+    body: "Según el modelo:",
+    points: ["Pantalla TFT a color con mirroring del celular", "Arranque keyless", "Sensor de presión de neumáticos"],
+    photo: photos.f703.ciudad,
   },
-];
-
-/** «Elegí el color»: colores reales de la gama que ya tienen foto. */
-export const colorPicks = [
-  { name: "Plata", hex: "#C0C0C0", model: "703F", slug: "703f", photo: photos.f703.plata },
-  { name: "Champagne", hex: "#EDE0BC", model: "350X", slug: "350x", photo: photos.x350.champagne },
-  { name: "Negro", hex: "#141414", model: "350X", slug: "350x", photo: photos.x350.negro },
-  { name: "Blanco y rojo", hex: "#E40A1D", model: "703RR", slug: "703rr", photo: photos.rr703.blancoRojo },
-  { name: "Negro", hex: "#141414", model: "350T", slug: "350t", photo: photos.t350.negro },
-];
+  caption: "Fotos ilustrativas: Zontes 703F en la tierra, de noche y en la ciudad.",
+};
 
 export const roads: {
   id: Use;
