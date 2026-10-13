@@ -9,7 +9,7 @@ export const metadata: Metadata = {
 export default function ContactoPage() {
   return (
     <div className="contact-page">
-      <ContactBlock titleAs="h1" />
+      <ContactBlock titleAs="h1" theme="dia" />
     </div>
   );
 }
