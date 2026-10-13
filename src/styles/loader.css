@@ -1,0 +1,32 @@
+/* ============ Pantalla de carga «Acelera» ============
+   La decide el script del <head> (clase .con-carga en <html>): una vez por sesión y nunca con «reducir movimiento».
+   La palabra ZONTES está en el mismo lugar y tamaño que la palabra gigante de la portada: al subir la cortina,
+   la de abajo ya está ancha y el paso se ve continuo. */
+.loader{display:none;position:fixed;inset:0;z-index:300;background:var(--c-asfalto);color:var(--c-niebla);clip-path:inset(0% 0% 0% 0%)}
+.con-carga .loader,.loader.is-done{display:block}
+.con-carga{overflow:hidden}
+.loader-word{position:absolute;left:0;right:0;top:46%;display:flex;justify-content:center;margin:0;transform:translateY(-50%);white-space:nowrap;font-family:var(--f-display);font-weight:900;font-stretch:62%;font-size:var(--fs-mega);line-height:.8;letter-spacing:-.025em;text-transform:uppercase}
+.loader-top{position:absolute;left:var(--gutter);right:var(--gutter);top:28px;display:flex;justify-content:space-between;gap:24px;font-size:var(--fs-sm);font-weight:500;color:var(--c-humo)}
+.loader-bottom{position:absolute;left:var(--gutter);right:var(--gutter);bottom:clamp(28px,5vh,48px);display:flex;align-items:flex-end;justify-content:space-between;gap:24px}
+.loader-count{display:grid;gap:6px}
+.loader-label{font-size:var(--fs-sm);font-weight:600;color:var(--c-humo)}
+.loader-speed{display:inline-flex;align-items:baseline;gap:10px}
+.loader-num{font-family:var(--f-display);font-weight:700;font-stretch:88%;font-size:clamp(64px,9vw,132px);line-height:.85;letter-spacing:-.02em}
+.loader-speed small{font-size:18px;font-weight:500;color:var(--c-humo)}
+.loader-blink{width:56px;height:40px;fill:rgba(236,237,235,.16)}
+/* El guiño: dos parpadeos del ámbar al llegar a 100 */
+.loader.is-done .loader-blink{animation:guino .66s steps(1) 1 both}
+@keyframes guino{0%{fill:var(--c-guino)}25%{fill:rgba(236,237,235,.16)}50%{fill:var(--c-guino)}75%,100%{fill:rgba(236,237,235,.16)}}
+.loader-track{position:absolute;left:0;right:0;bottom:0;height:3px;background:rgba(236,237,235,.14)}
+.loader-bar{display:block;height:100%;background:var(--c-niebla);transform:scaleX(0);transform-origin:0 50%}
+@media (max-width:720px){
+  .loader-top span:first-child{display:none}
+}
+/* Teléfono y tablet en vertical: la palabra más arriba, en el mismo lugar que en la portada (styles/scenes.css) */
+@media (max-width:720px),(max-width:1100px) and (orientation:portrait){
+  .loader-word{top:30%}
+}
+/* Pantallas bajas: el mismo tope que la palabra de la portada */
+@media (max-height:560px) and (min-width:560px){
+  .loader-word{top:34%;font-size:min(var(--fs-mega),36vh)}
+}

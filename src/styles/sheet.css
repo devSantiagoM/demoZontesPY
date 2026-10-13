@@ -1,0 +1,95 @@
+/* ============ Ficha de modelo: portada con foto, momentos, vistas, preguntas y más de la gama ============ */
+.eyebrow{font-size:var(--fs-sm);font-weight:600;color:var(--muted)}
+
+/* Portada con foto: la moto en el estudio de aluminio, delante de su nombre gigante pintado. */
+.sheet-hero--studio{padding-bottom:clamp(48px,6vw,88px);background:var(--c-alu);color:var(--c-asfalto)}
+.sheet-stage{--giant:min(calc((min(100vw, var(--max)) - var(--gutter) * 2) / (var(--len,5) * .9)), 300px);display:grid;justify-items:center;margin-top:clamp(12px,2vw,28px)}
+.sheet-giant{grid-area:1 / 1;align-self:start;max-width:100%;font-family:var(--f-display);font-weight:900;font-stretch:125%;font-size:var(--giant);line-height:.8;letter-spacing:-.025em;white-space:nowrap;color:var(--ink,var(--paint));animation:accel 1.1s .1s var(--ease) both}
+.sheet-photo{grid-area:1 / 1;align-self:end;position:relative;width:min(100%, var(--pw, 760px), 760px);height:auto;max-height:min(500px,56svh);object-fit:contain;margin-top:calc(var(--giant) * .36);animation:photo-in .9s .25s var(--ease) both}
+.sheet-foot{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:24px 48px;margin-top:clamp(20px,3vw,36px)}
+.sheet-hero--studio .sheet-intro{gap:12px}
+.sheet-title{font-family:var(--f-display);font-weight:800;font-size:clamp(40px,4.6vw,68px);line-height:.95;letter-spacing:var(--track-tight)}
+.sheet-hero--studio .lead{color:var(--muted);opacity:1}
+
+/* Momentos: pestañas con fotos de uso */
+.moments-grid{display:grid;grid-template-columns:minmax(0,1fr);gap:32px}
+.moments-intro{display:grid;gap:16px;align-content:start;min-width:0}
+.moments-intro .lead{color:var(--muted)}
+.moment-tabs{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}
+.moment-tabs button{flex:none;display:inline-flex;align-items:center;gap:8px;min-height:var(--hit);padding:0 18px;border:1px solid var(--line);border-radius:var(--r-pill);background:transparent;color:var(--fg);font-weight:600;transition:background-color .25s,color .25s}
+.moment-tabs button[aria-selected="true"]{border-color:var(--fg);background:var(--fg);color:var(--bg)}
+.moment-num{font-size:var(--fs-xs);opacity:.75}
+.moment-arrow{display:none}
+.moment-panel{min-width:0}
+.moment-frame{position:relative;overflow:hidden;aspect-ratio:6/5;border-radius:var(--r-lg);background:var(--c-asfalto);animation:photo-fade .6s var(--ease) both}
+.moment-frame img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.moment-count{position:absolute;left:16px;top:16px;padding:6px 12px;border-radius:var(--r-pill);background:rgba(14,15,16,.72);color:var(--c-niebla);font-size:var(--fs-sm);font-weight:600}
+.moment-credit{position:absolute;right:16px;bottom:14px;padding:4px 10px;border-radius:var(--r-pill);background:rgba(14,15,16,.66);color:#D2D4D6;font-size:var(--fs-xs)}
+.moment-title{margin-top:28px}
+.moment-body{max-width:52ch;margin-top:10px;color:var(--muted)}
+.moment-points{margin-top:22px;border-top:1px solid var(--line)}
+.moment-points li{display:flex;align-items:center;gap:14px;padding:13px 0;border-bottom:1px solid var(--line);font-weight:500}
+.moment-points svg{flex:none;width:10px;height:10px;fill:var(--c-alu-3)}
+@media (min-width:1024px){
+  .moments-grid{grid-template-columns:minmax(0,1fr) minmax(0,min(600px,46%));gap:clamp(48px,6vw,96px);align-items:start}
+  .moments-intro{position:sticky;top:calc(var(--header-h) + 24px)}
+  .moment-tabs{display:grid;gap:0;margin-top:24px;border-top:1px solid var(--line)}
+  .moment-tabs button{display:grid;grid-template-columns:52px minmax(0,1fr) 24px;min-height:auto;padding:16px 0;border:0;border-bottom:1px solid var(--line);border-radius:0;background:transparent;color:var(--muted);text-align:left}
+  .moment-tabs button[aria-selected="true"]{background:transparent;color:var(--fg)}
+  .moment-num{font-size:var(--fs-sm);opacity:1}
+  .moment-label{font-family:var(--f-display);font-weight:800;font-stretch:100%;font-size:clamp(32px,3vw,44px);line-height:1.05;transition:font-stretch .7s var(--ease)}
+  .moment-tabs button[aria-selected="true"] .moment-label,.moment-tabs button:hover .moment-label{font-stretch:125%}
+  .moment-arrow{display:block;width:22px;height:22px;opacity:0;transition:opacity .3s}
+  .moment-tabs button[aria-selected="true"] .moment-arrow{opacity:1}
+}
+
+/* Colores y vistas */
+.sheet-body:has(+ .views){padding-bottom:clamp(48px,5vw,72px)}
+.views{padding-top:0;padding-bottom:clamp(48px,5vw,72px)}
+.views-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:20px;margin-top:24px}
+.views-grid:has(> :only-child){max-width:640px}
+.view-panel{position:relative;display:block;overflow:hidden;aspect-ratio:16/11;border-radius:var(--r-lg);background:var(--panel);container-type:inline-size}
+.view-giant{position:absolute;inset:8% 0 auto;text-align:center;white-space:nowrap;font-family:var(--f-display);font-weight:900;font-stretch:125%;font-size:min(160px,calc(90cqi / (var(--len,5) * .88)));line-height:.85;letter-spacing:-.02em;color:var(--ink,var(--paint))}
+.view-panel img{position:absolute;left:7%;bottom:5%;width:86%;height:80%;object-fit:contain;object-position:center bottom}
+.view-panel .paint-plate{position:absolute;inset:0;border-radius:0}
+.view-caption{display:flex;align-items:center;gap:10px;margin-top:12px;font-weight:500}
+.views-note{margin-top:16px}
+
+/* Preguntas frecuentes */
+.faq,.related{padding-block:clamp(64px,8vw,120px)}
+.related{padding-top:0}
+.faq-grid{display:grid;grid-template-columns:minmax(0,1fr);gap:32px}
+.faq-head{display:grid;gap:18px;align-content:start;justify-items:start}
+.faq-list{border-top:1px solid var(--fg)}
+.faq-list details{border-bottom:1px solid var(--line)}
+.faq-list summary{display:flex;align-items:center;justify-content:space-between;gap:20px;min-height:76px;padding:14px 0;list-style:none;cursor:pointer;font-family:var(--f-display);font-weight:700;font-size:clamp(20px,1.8vw,26px);line-height:1.2}
+.faq-list summary::-webkit-details-marker{display:none}
+.faq-icon{flex:none;display:grid;place-items:center;width:40px;height:40px;border:1px solid var(--line);border-radius:50%;transition:transform .35s var(--ease),background-color .25s}
+.faq-icon svg{width:16px;height:16px}
+.faq-list details[open] .faq-icon{transform:rotate(45deg)}
+.faq-list summary:hover .faq-icon{background:var(--panel)}
+.faq-list details p{max-width:60ch;padding:0 56px 24px 0;color:var(--muted)}
+@media (min-width:1024px){
+  .faq-grid{grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:clamp(48px,6vw,96px)}
+}
+
+/* También en la gama: tarjetas con foto */
+.related-head{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:12px 48px}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:28px;margin-top:clamp(28px,3.4vw,44px)}
+.card{display:block;text-decoration:none}
+.card-panel{position:relative;display:block;overflow:hidden;aspect-ratio:16/11;border-radius:22px;background:var(--panel);container-type:inline-size}
+.card-giant{position:absolute;inset:7% 0 auto;text-align:center;white-space:nowrap;font-family:var(--f-display);font-weight:900;font-stretch:125%;font-size:min(140px,calc(86cqi / (var(--len,5) * .88)));line-height:.85;letter-spacing:-.02em;color:var(--ink,var(--paint));opacity:.9}
+.card-panel img{position:absolute;left:8%;bottom:5%;width:84%;height:76%;object-fit:contain;object-position:center bottom;transition:transform .7s var(--ease)}
+.card:hover .card-panel img{transform:translateX(8px)}
+.card-panel .paint-plate{position:absolute;inset:0;border-radius:0}
+.card-row{display:flex;align-items:baseline;justify-content:space-between;gap:12px;margin-top:16px}
+.card-name{font-family:var(--f-display);font-weight:800;font-stretch:100%;font-size:clamp(26px,2.2vw,32px);line-height:1;white-space:nowrap;transition:font-stretch .7s var(--ease)}
+.card:hover .card-name,.card:focus-visible .card-name{font-stretch:125%}
+.card-meta{font-size:var(--fs-sm);color:var(--muted);white-space:nowrap}
+.card-cat{display:block;margin-top:4px;color:var(--muted)}
+
+@media (max-width:560px){
+  .sheet-hero .hero-actions{display:grid}
+  .sheet-hero .hero-actions .btn{width:100%}
+  .faq-list details p{padding-right:0}
+}

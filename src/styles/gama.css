@@ -1,0 +1,150 @@
+/* ============ La gama (filas de modelos + vitrina) ============ */
+.gama-head{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:end;gap:20px 48px;margin-bottom:clamp(32px,4vw,48px)}
+.gama-head .lead{grid-column:1}
+.gama-head .tabs{grid-column:2;grid-row:1 / span 2;align-self:end}
+.gama-panel{margin-top:clamp(32px,4.4vw,64px)}
+.gama-note{margin-top:22px}
+.tabs{display:inline-flex;gap:4px;padding:4px;border:1px solid var(--line);border-radius:var(--r-pill)}
+.tabs button{min-height:var(--hit);padding:0 20px;border:0;border-radius:var(--r-pill);background:transparent;color:var(--fg);font-weight:600;transition:background-color .25s,color .25s}
+.tabs button .num{margin-left:4px;font-weight:500;color:var(--muted)}
+.tabs button[aria-selected="true"]{background:var(--fg);color:var(--bg)}
+.tabs button[aria-selected="true"] .num{color:inherit;opacity:.7}
+
+/* Escritorio: lista a la izquierda, vitrina fija a la derecha. Tablet y teléfono: filas con miniatura. */
+.gama-split{display:grid;grid-template-columns:minmax(0,1fr);align-items:start}
+.rows{border-top:1px solid var(--line)}
+.row{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,.62fr) 8ch 8ch;align-items:center;gap:18px;padding-block:12px;border-bottom:1px solid var(--line);text-decoration:none}
+.row-thumb{display:none}
+/* El nombre se ensancha al pasar el cursor (de 100 % a 125 %). Su tamaño se calcula con el ancho de su columna y
+   el nombre más largo de la lista (--maxlen): a 125 %, cada letra ocupa hasta 0,8 veces el tamaño de letra, así
+   «368M ETC» entra entero y no se monta sobre la categoría. */
+.row-name{--row-fs:clamp(32px,3.7vw,60px);container-type:inline-size;margin:0;font-family:var(--f-display);font-weight:800;font-stretch:100%;line-height:1;white-space:nowrap;color:var(--fg);transition:font-stretch .7s var(--ease)}
+.row-name-text{display:block;font-size:min(var(--row-fs),calc(100cqi / (var(--maxlen,6) * .82)));letter-spacing:-.01em}
+.row:hover .row-name,.row:focus-visible .row-name{font-stretch:125%}
+.row-cat{color:var(--muted)}
+.row-num{font-size:var(--fs-lead);font-weight:500;text-align:right;white-space:nowrap}
+.row-num small{font-size:var(--fs-xs);font-weight:500;color:var(--muted)}
+.gama-all{margin-top:20px}
+
+.showcase{display:none}
+.showcase-panel{position:relative;overflow:hidden;aspect-ratio:16/11;border-radius:var(--r-lg);background:var(--panel);container-type:inline-size}
+.showcase-giant{position:absolute;inset:7% 0 auto;text-align:center;white-space:nowrap;font-family:var(--f-display);font-weight:900;font-stretch:125%;font-size:min(200px,calc(92cqi / (var(--len,5) * .88)));line-height:.85;letter-spacing:-.02em;color:var(--ink,var(--paint));animation:accel .9s var(--ease) both}
+@keyframes accel{from{font-stretch:62%;opacity:0}}
+.showcase-photo{position:absolute;left:7%;bottom:5%;width:86%;height:78%;object-fit:contain;object-position:center bottom;animation:photo-in .7s var(--ease) both}
+@keyframes photo-in{from{opacity:0;transform:translateX(-18px)}}
+/* Sin foto en ese color: el panel entero se pinta y el nombre ocupa el lugar de la moto */
+.showcase-plate{position:absolute;inset:0;border-radius:0;padding:clamp(20px,2.4vw,32px);box-shadow:inset 0 0 0 1px rgba(0,0,0,.06);animation:photo-fade .6s var(--ease) both}
+.showcase-plate .paint-plate-name{font-size:min(180px,calc(86cqi / (var(--len,5) * .88)));line-height:.85;letter-spacing:-.02em;animation:accel .9s var(--ease) both}
+@keyframes photo-fade{from{opacity:0}}
+.showcase-title{display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:6px 16px;margin-top:22px}
+.showcase-name{font-family:var(--f-display);font-weight:800;font-size:clamp(26px,2.4vw,36px);line-height:1}
+.showcase-cat{color:var(--muted)}
+.showcase-specs{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-top:18px;padding-block:16px;border-block:1px solid var(--line)}
+.showcase-specs dt{font-size:var(--fs-sm);color:var(--muted)}
+.showcase-specs dd{margin-top:4px;font-family:var(--f-display);font-weight:700;font-stretch:88%;font-size:clamp(24px,2.1vw,32px);line-height:1;white-space:nowrap}
+.showcase-specs dd span{font-family:var(--f-text);font-weight:500;font-stretch:100%;font-size:var(--fs-sm);color:var(--muted)}
+.showcase-foot{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:16px;margin-top:18px}
+.showcase-actions{display:flex;flex-wrap:wrap;gap:10px}
+.showcase-actions .btn{min-height:48px;padding:0 22px}
+
+/* Pastillas de color (vitrina y ficha) */
+.color-chips{display:flex;flex-wrap:wrap;gap:6px}
+.color-chips button{display:inline-flex;align-items:center;gap:8px;min-height:var(--hit);padding:0 14px 0 8px;border:1px solid var(--line);border-radius:var(--r-pill);background:transparent;color:var(--fg);font-size:var(--fs-sm);font-weight:500;transition:border-color .2s}
+.color-chips button:hover{border-color:var(--muted)}
+.color-chips button[aria-pressed="true"]{border-color:var(--fg)}
+.color-chips .dot{width:22px;height:22px}
+
+@media (min-width:1024px){
+  .gama-split{grid-template-columns:minmax(0,1fr) minmax(0,44%);gap:clamp(40px,4vw,64px)}
+  .showcase{display:block;position:sticky;top:calc(var(--header-h) + 20px)}
+  .row.is-active .row-name{font-stretch:125%}
+}
+@media (min-width:1024px) and (max-width:1279px){
+  .row{grid-template-columns:minmax(0,1fr) 8ch 8ch}
+  .row-cat{display:none}
+}
+@media (max-width:1023px){
+  .row{grid-template-columns:clamp(96px,19vw,156px) minmax(0,1fr) auto auto;grid-template-areas:"thumb name name name" "thumb cat cc hp";align-items:center;column-gap:clamp(14px,2.4vw,24px);row-gap:6px;padding-block:14px}
+  .row-thumb{display:block;grid-area:thumb}
+  .row-name{--row-fs:clamp(28px,6.6vw,56px);grid-area:name;align-self:end}
+  .row-cat{grid-area:cat;align-self:start;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:var(--fs-sm)}
+  .row > .row-num:nth-last-child(2){grid-area:cc;align-self:start}
+  .row > .row-num:last-child{grid-area:hp;align-self:start}
+  .row-num{font-size:var(--fs-ui)}
+}
+
+/* Miniatura de cada fila (tablet y teléfono) */
+.row-thumb{position:relative;aspect-ratio:16/11;border-radius:12px;overflow:hidden;background:var(--c-alu-2)}
+.row-thumb img{position:absolute;left:6%;top:8%;width:88%;height:84%;object-fit:contain}
+.row-thumb .paint-plate{position:absolute;inset:0;border-radius:0;padding:8px 10px;justify-content:flex-end}
+.row-thumb .paint-plate-name{font-size:clamp(15px,2.4vw,22px)}
+
+/* Placa pintada: el lugar de una foto que todavía no está */
+.paint-plate{display:flex;flex-direction:column;justify-content:space-between;align-items:flex-start;gap:10px;padding:clamp(16px,2vw,24px);border-radius:var(--r-md);background:var(--plate);color:var(--c-niebla)}
+.paint-plate[data-light]{color:var(--c-asfalto)}
+.paint-plate-name{font-family:var(--f-display);font-weight:900;font-stretch:125%;font-size:clamp(28px,3.6vw,48px);line-height:.9;letter-spacing:-.01em}
+.paint-plate-note{padding:5px 12px;border-radius:var(--r-pill);background:rgba(14,15,16,.74);color:var(--c-niebla);font-size:var(--fs-sm);font-weight:500;line-height:1.3}
+
+/* ============ Franja que corre ============ */
+.band{overflow:hidden;background:var(--c-goma);color:var(--c-niebla);white-space:nowrap}
+.band-track{display:flex;width:max-content;animation:band var(--band-dur,40s) linear infinite}
+.band:hover .band-track{animation-play-state:paused}
+.band-run{display:flex;align-items:center}
+.band-item{display:inline-flex;align-items:center;gap:28px;padding:16px 28px 16px 0;font-family:var(--f-display);font-weight:700;font-stretch:112%;font-size:clamp(17px,1.5vw,21px);letter-spacing:.01em}
+.band-item svg{width:10px;height:10px;fill:var(--c-humo)}
+@keyframes band{to{transform:translateX(-50%)}}
+@media (prefers-reduced-motion:reduce){.band-track{animation:none}}
+
+/* ============ Para nuestros caminos ============
+   La foto del camino elegido es el fondo, desenfocada lo justo para que la moto se reconozca; un velo oscuro
+   (más fuerte del lado del texto y abajo) asegura que los textos se lean. Al cambiar de camino, el fondo funde. */
+.roads{position:relative;isolation:isolate;overflow:hidden;padding-block:clamp(72px,9vw,128px);background:var(--c-goma)}
+.roads-bg{position:absolute;inset:0;z-index:-1;overflow:hidden}
+.roads-bg-img{position:absolute;left:-3%;top:-3%;width:106%;max-width:none;height:106%;object-fit:cover;filter:blur(9px) saturate(1.1) brightness(.72);opacity:0;transition:opacity .9s var(--ease)}
+.roads-bg-img.is-on{opacity:1}
+.roads-scrim{position:absolute;inset:0;background:linear-gradient(90deg,rgba(14,15,16,.72) 0%,rgba(14,15,16,.42) 50%,rgba(14,15,16,.22) 100%),linear-gradient(180deg,rgba(14,15,16,.5) 0%,rgba(14,15,16,0) 30%,rgba(14,15,16,0) 55%,rgba(14,15,16,.74) 100%)}
+.roads-head{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:24px 48px}
+.roads-intro{display:grid;gap:12px}
+.roads .eyebrow,.picks-title,.road-caption{color:#C9CCCF}
+.roads .h2{font-size:clamp(38px,4vw,56px)}
+.tabs--glass{border-color:rgba(236,237,235,.3);background:rgba(14,15,16,.3);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px)}
+.road-panel{animation:road-in .6s var(--ease) both}
+@keyframes road-in{from{opacity:0;transform:translateY(12px)}}
+.road-copy{display:grid;justify-items:start;gap:16px;max-width:780px;margin:clamp(48px,7vw,96px) 0 clamp(36px,5vw,64px)}
+.road-tag{padding:6px 14px;border:1px solid rgba(236,237,235,.2);border-radius:var(--r-pill);background:rgba(14,15,16,.6);font-family:var(--f-display);font-weight:800;font-stretch:112%;font-size:15px;letter-spacing:.02em;text-transform:uppercase}
+.road-title{font-family:var(--f-display);font-weight:800;font-size:clamp(42px,6vw,88px);line-height:.95;letter-spacing:var(--track-tight);text-wrap:balance}
+.road-body{max-width:46ch;color:#D6D8DA;font-size:var(--fs-lead);line-height:1.5}
+.picks-title{margin-bottom:12px;font-size:var(--fs-sm);font-weight:600}
+.road-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,220px),1fr));gap:clamp(14px,1.6vw,20px)}
+.road-card{display:block;height:100%;padding:12px 12px 16px;border:1px solid rgba(236,237,235,.18);border-radius:22px;background:rgba(26,27,29,.42);-webkit-backdrop-filter:blur(18px) saturate(1.2);backdrop-filter:blur(18px) saturate(1.2);text-decoration:none;transition:background-color .25s}
+.road-card:hover{background:rgba(26,27,29,.6)}
+.road-card-tile{position:relative;display:block;aspect-ratio:16/9;overflow:hidden;border-radius:14px;background:var(--c-alu)}
+.road-card-tile img{position:absolute;left:8%;top:6%;width:84%;height:88%;object-fit:contain;transition:transform .6s var(--ease)}
+.road-card:hover .road-card-tile img{transform:translateX(6px)}
+.road-card-tile .paint-plate{position:absolute;inset:0;border-radius:0}
+.road-card-row{display:flex;align-items:center;gap:12px;margin-top:14px}
+.road-card-text{display:grid;gap:2px;min-width:0}
+.road-card-name{font-family:var(--f-display);font-weight:800;font-stretch:100%;font-size:clamp(21px,1.8vw,26px);line-height:1.05;transition:font-stretch .7s var(--ease)}
+.road-card:hover .road-card-name,.road-card:focus-visible .road-card-name{font-stretch:125%}
+.road-card-why{font-size:var(--fs-sm);color:#D6D8DA}
+.road-card-arrow{flex:none;width:22px;height:22px;margin-left:auto;transition:transform .3s var(--ease)}
+.road-card:hover .road-card-arrow{transform:translateX(4px)}
+.road-foot{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:16px;margin-top:28px}
+.road-caption{font-size:var(--fs-sm)}
+@supports not ((backdrop-filter:blur(1px)) or (-webkit-backdrop-filter:blur(1px))){
+  .road-card{background:rgba(26,27,29,.84)}
+  .tabs--glass{background:rgba(14,15,16,.72)}
+}
+@media (max-width:720px){
+  .roads-scrim{background:linear-gradient(180deg,rgba(14,15,16,.66) 0%,rgba(14,15,16,.5) 40%,rgba(14,15,16,.8) 100%)}
+  .roads-bg-img{filter:blur(7px) saturate(1.1) brightness(.72)}
+  .road-foot .btn{width:100%}
+}
+
+/* ============ Servicio ============ */
+.services-title{max-width:14ch;margin-bottom:clamp(40px,6vw,72px)}
+.services-list{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));border-top:1px solid var(--fg)}
+.services-list li{display:grid;grid-template-rows:auto 1fr auto;gap:14px;padding:28px 28px 8px 0}
+.services-list li + li{padding-left:28px;border-left:1px solid var(--line)}
+.services-list p{color:var(--muted)}
+.services-list .btn--ghost{justify-self:start;padding:0}
